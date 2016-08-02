@@ -1,3 +1,4 @@
+
 setwd("C:\\GoogleDrive\\Interactive\\Rcode\\Shiny\\MyCode")
 ShinyCode<-file.path("ResponseCurves\\External")
 sourceList<-list.files(ShinyCode,full.names=TRUE)
@@ -83,52 +84,4 @@ exploreCurves(fitLst,inputLayers=layerStk,trainData=sdmdata[tmp,],threshold=2,
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#this resampling might be the best way to get at the evaluation metrics
-data(BloodBrain)
-set.seed(1)
-
-tmp <- createDataPartition(logBBB,
-                           p = .8,
-                           times = 10)
-
-rpartFit <- train(bbbDescr, logBBB,
-                  "rpart", 
-                  tuneLength = 16,
-                  trControl = trainControl(
-                    method = "LGOCV", index = tmp))
-
-ctreeFit <- train(bbbDescr, logBBB,
-                  "ctree", 
-                  trControl = trainControl(
-                    method = "LGOCV", index = tmp))
-
-earthFit <- train(bbbDescr, logBBB,
-                  "earth",
-                  tuneLength = 20,
-                  trControl = trainControl(
-                    method = "LGOCV", index = tmp))
-
-#or load pre-calculated results using:
-  #load(url("http://caret.r-forge.r-project.org/exampleModels.RData"))
-  
-  resamps <- resamples(list(CART = rpartFit,
-                            CondInfTree = ctreeFit,
-                            MARS = earthFit))
-
-resamps
-summary(resamps)
 
